@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="si">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>User Page</title>
+  <style>
+    :root{--accent:#3b82f6;--bg:#f5f7fb;--card:#ffffff;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);margin:0;padding:24px;color:#111}
+    .container{max-width:980px;margin:0 auto}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:var(--muted)}
+
+    .card{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    form.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+    label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}
+    input,button,select{padding:10px 12px;border-radius:8px;border:1px solid #e6e9ef;font-size:14px}
+    .full{grid-column:1/-1}
+    .actions{display:flex;gap:8px;justify-content:flex-end}
+    button.primary{background:var(--accent);color:white;border:none}
+    button.ghost{background:transparent;border:1px solid #e6e9ef}
+
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9}
+    th{font-size:13px;color:var(--muted)}
+    td small{display:block;color:var(--muted);font-size:12px}
+
+    .btn-sm{padding:6px 8px;font-size:13px;border-radius:8px}
+    .edit{background:#fef3c7;border:1px solid #f5c542}
+    .del{background:#fee2e2;border:1px solid #f87171}
+
+    @media (max-width:700px){
+      form.grid{grid-template-columns:1fr}
+      th:nth-child(3),td:nth-child(3){display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>User Management</h1>
+      <p class="lead">HTML + CSS + JavaScript හරහා අවශ්‍ය user list එකක් add / edit / delete කරන්න.</p>
+    </div>
+  </header>
+
+  <section class="card">
+    <form id="userForm" class="grid" onsubmit="return false;">
+      <div>
+        <label for="name">නම</label>
+        <input id="name" required minlength="2" placeholder="John Doe">
+      </div>
+      <div>
+        <label for="email">ඊමේල්</label>
+        <input id="email" type="email" required placeholder="name@example.com">
+      </div>
+      <div>
+        <label for="phone">දුරකථන</label>
+        <input id="phone" placeholder="071-1234567">
+      </div>
+      <div>
+        <label for="role">Role</label>
+        <select id="role">
+          <option value="User">User</option>
+          <option value="Admin">Admin</option>
+        </select>
+      </div>
+
+      <div class="full actions">
+        <button id="resetBtn" class="btn-sm ghost" type="button">Reset</button>
+        <button id="submitBtn" class="btn-sm primary" type="button">Add User</button>
+      </div>
+    </form>
+
+    <div style="margin-top:12px">
+      <input id="search" placeholder="Search by name or email" style="width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef">
+    </div>
+
+    <table id="userTable" aria-label="Users table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- JS will populate -->
+      </tbody>
+    </table>
+
+    <p id="emptyMsg" style="margin-top:12px;color:var(--muted);display:none">No users yet. Add someone using the form above.</p>
+  </section>
+</div>
+
+<script>
+  // Simple client-side user manager with localStorage persistence
+  const form = document.getElementById('userForm');
+  const nameIn = document.getElementById('name');
+  const emailIn = document.getElementById('email');
+  const phoneIn = document.getElementById('phone');
+  const roleIn = document.getElementById('role');
+  const submitBtn = document.getElementById('submitBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const userTable = document.querySelector('#userTable tbody');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const search = document.getElementById('search');
+
+  let users = JSON.parse(localStorage.getItem('users_v1') || '[]');
+  let editingIndex = -1;
+
+  function render(filter=''){
+    userTable.innerHTML = '';
+    const list = users.filter(u => (u.name+u.email).toLowerCase().includes(filter.toLowerCase()));
+    if(list.length === 0){ emptyMsg.style.display = 'block'; return; } else emptyMsg.style.display = 'none';
+
+    list.forEach((u, idx) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+          <td>${escapeHtml(u.name)}<small>${u.email}</small></td>
+          <td>${escapeHtml(u.email)}</td>
+          <td>${escapeHtml(u.phone||'-')}</td>
+          <td>${escapeHtml(u.role)}</td>
+          <td>
+            <button class="btn-sm edit" data-index="${idx}">Edit</button>
+            <button class="btn-sm del" data-index="${idx}">Delete</button>
+          </td>`;
+      userTable.appendChild(tr);
+    });
+  }
+
+  function save(){ localStorage.setItem('users_v1', JSON.stringify(users)); }
+
+  function clearForm(){ form.reset(); editingIndex = -1; submitBtn.textContent = 'Add User'; }
+
+  submitBtn.addEventListener('click', ()=>{
+    const name = nameIn.value.trim();
+    const email = emailIn.value.trim();
+    const phone = phoneIn.value.trim();
+    const role = roleIn.value;
+    if(!name || !email) return alert('Name and email අවශ්‍යයි');
+
+    if(editingIndex >= 0){
+      users[editingIndex] = {name,email,phone,role};
+    } else {
+      users.push({name,email,phone,role});
+    }
+    save(); render(search.value); clearForm();
+  });
+
+  resetBtn.addEventListener('click', clearForm);
+
+  userTable.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button'); if(!btn) return;
+    const idx = Number(btn.dataset.index);
+    if(btn.classList.contains('del')){
+      if(!confirm('Delete this user?')) return;
+      users.splice(idx,1); save(); render(search.value);
+    } else if(btn.classList.contains('edit')){
+      const u = users[idx];
+      nameIn.value = u.name; emailIn.value = u.email; phoneIn.value = u.phone; roleIn.value = u.role;
+      editingIndex = idx; submitBtn.textContent = 'Save Changes';
+    }
+  });
+
+  search.addEventListener('input', ()=> render(search.value));
+
+  function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  // initial demo data (only if empty)
+  if(users.length === 0){
+    users = [
+      {name:'Agasthi Fernando', email:'agasthi@example.com', phone:'071-1234567', role:'Admin'},
+      {name:'Nimal Perera', email:'nimal@example.com', phone:'077-9876543', role:'User'}
+    ]; save();
+  }
+
+  render();
+</script>
+</body>
+</html>
