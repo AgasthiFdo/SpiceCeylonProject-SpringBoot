@@ -2,6 +2,8 @@ package lk.ijse.aad.spice_ceylon_backend.service;
 
 
 
+import lk.ijse.aad.spice_ceylon_backend.dto.MerchantDTO;
+
 import java.util.List;
 
 public interface MerchantService {

@@ -1,12 +1,8 @@
 package lk.ijse.aad.spice_ceylon_backend.service;
 
 import lombok.RequiredArgsConstructor;
-import lk.ijse.aad.spice_ceylon_backend.dto.AuthDTO;
 import lk.ijse.aad.spice_ceylon_backend.dto.AuthResponseDTO;
 import lk.ijse.aad.spice_ceylon_backend.dto.RegisterDTO;
-import lk.ijse.aad.spice_ceylon_backend.entity.Role;
-import lk.ijse.aad.spice_ceylon_backend.entity.User;
-import lk.ijse.aad.spice_ceylon_backend.repository.UserRepository;
 import lk.ijse.aad.spice_ceylon_backend.util.JwtUtil;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
