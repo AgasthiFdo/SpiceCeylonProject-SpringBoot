@@ -1,0 +1,160 @@
+/* General */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fffdf6;
+    color: #333;
+}
+h2 {
+    font-weight: 600;
+    color: #5a2d0c;
+}
+
+/* Navbar */
+.navbar {
+    background: #5a2d0c;
+}
+.navbar-brand {
+    font-weight: 700;
+}
+.nav-link:hover {
+    color: #ffc107;
+}
+
+/* Hero Section */
+.hero {
+    background: url('../../For test/Fron/images/spice-banner.jpg') center/cover no-repeat;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+}
+.hero h1 {
+    font-size: 3rem;
+}
+
+/* Product Cards */
+.product-card, .collection-card {
+    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.product-card:hover, .collection-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+/* About Section */
+#about img {
+    border-radius: 15px;
+}
+
+
+
+/* Contact Form */
+.contact-form {
+    background: #fff;
+    border-radius: 12px;
+}
+.contact-form .btn {
+    width: 100%;
+}
+
+/* Footer */
+/*.footer {*/
+/*    background: #5a2d0c;*/
+/*    color: white;*/
+/*    text-align: center;*/
+/*    padding: 30px 0;*/
+/*}*/
+footer {
+    background-color: #f9f9f9;
+    padding: 40px 80px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+footer h4 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+footer p, footer a {
+    font-size: 14px;
+    color: #555;
+    text-decoration: none;
+    line-height: 1.8;
+}
+
+footer a:hover {
+    color: #000;
+}
+
+/* Contact section */
+.footer-contact p {
+    margin: 6px 0;
+}
+
+.social-icons {
+    margin-top: 10px;
+}
+.social-icons a {
+    margin-right: 10px;
+    font-size: 18px;
+    color: #555;
+}
+.social-icons a:hover {
+    color: #000;
+}
+
+/* Newsletter */
+.newsletter p {
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.newsletter input[type="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    width: 70%;
+}
+
+.newsletter button {
+    padding: 10px 20px;
+    border: none;
+    background: #000;
+    color: #fff;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+}
+
+.newsletter button:hover {
+    background: #5a2d0c;
+}
+
+.payment-icons {
+    margin-top: 15px;
+}
+
+.payment-icons img {
+    height: 30px;
+    margin-right: 8px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    footer {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    footer {
+        grid-template-columns: 1fr;
+        padding: 30px;
+    }
+}
