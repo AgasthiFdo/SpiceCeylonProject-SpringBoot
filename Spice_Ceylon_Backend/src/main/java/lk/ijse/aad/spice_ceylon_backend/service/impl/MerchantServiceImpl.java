@@ -1,6 +1,8 @@
 package lk.ijse.aad.spice_ceylon_backend.service.impl;
 
 
+import lk.ijse.aad.spice_ceylon_backend.dto.MerchantDTO;
+import lk.ijse.aad.spice_ceylon_backend.entity.Merchant;
 import lk.ijse.aad.spice_ceylon_backend.repository.MerchantRepository;
 import lk.ijse.aad.spice_ceylon_backend.service.MerchantService;
 import lombok.RequiredArgsConstructor;
