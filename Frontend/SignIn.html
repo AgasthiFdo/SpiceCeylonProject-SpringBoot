@@ -7,109 +7,116 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-    body {
-    background: url('assets/itempattern.png') repeat;
-    background-size: cover;
-    font-family: 'Noto Serif', serif;
-    margin: 0;
-    padding: 0;
-    }
+        body {
+            background: linear-gradient(135deg, #ffb703, #fb8500);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Poppins", sans-serif;
+        }
 
-    .form-container {
-    max-width: 450px;
-    margin: 100px auto;
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    border: 3px solid #8b4513;
-    transition: transform 0.4s ease-in-out;
-    }
+        .form-container {
+            max-width: 500px;
+            background: #ffffff;
+            border-radius: 20px;
+            border: 3px solid #a0522d;            padding: 40px;
+            box-shadow: 0px 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
 
-    .form-container:hover {
-    transform: scale(1.02);
-    }
+        .form-container:hover {
+            transform: scale(1.02);
+        }
 
-    h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #6b3e26;
-    font-weight: bold;
-    }
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #5a2e0e;
+            margin-bottom: 25px;
+        }
 
-    .form-label {
-    font-weight: 600;
-    color: #5a2e0e;
-    }
+        .form-label {
+            font-weight: 600;
+            color: black;
+            text-align: left;
+            display: block;
+            margin-bottom: 6px;
+        }
 
-    .form-control:focus {
-    border-color: #8b4513;
-    box-shadow: 0 0 10px rgba(139, 69, 19, 0.5);
-    transition: 0.3s;
-    }
+        .form-control {
+            border-radius: 12px;
+            border: 1.5px solid #ccc;
+            padding: 14px;
+            font-size: 1rem;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
 
-    .input-group-text {
-    background-color: #fff2e1;
-    border-right: none;
-    }
+        .form-control:focus {
+            border-color: #fb8500;
+            box-shadow: 0 0 6px rgba(251, 133, 0, 0.4);
+            outline: none;
+        }
 
-    .form-control {
-    border-left: none;
-    }
+        .btn-primary {
+            width: 100%;
+            background: #fb8500;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
 
-    .btn-primary {
-    background-color: #8b4513;
-    border-color: #8b4513;
-    transition: all 0.3s ease;
-    }
+        .btn-primary:hover {
+            background: #a0522d;
+            transform: translateY(-2px);
+        }
 
-    .btn-primary:hover {
-    background-color: #a0522d;
-    transform: translateY(-2px);
-    }
+        .forgot-password {
+            margin-top: 12px;
+            font-size: 0.9rem;
+        }
 
-    .forgot-password {
-    text-align: right;
-    margin-bottom: 10px;
-    font-size: 0.9rem;
-    }
+        .forgot-password a {
+            color: #8b4513;
+            text-decoration: none;
+        }
 
-    .forgot-password a {
-    text-decoration: none;
-    color: #8b4513;
-    }
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
 
-    .forgot-password a:hover {
-    text-decoration: underline;
-    }
+        .signup-link {
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
 
-    .signup-link {
-    text-align: center;
-    margin-top: 15px;
-    font-size: 0.95rem;
-    }
+        .signup-link a {
+            color: #5a2d0c;
+            font-weight: 600;
+            text-decoration: none;
+        }
 
-    .signup-link a {
-    color: #8b4513;
-    text-decoration: none;
-    font-weight: 600;
-    }
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
 
-    .signup-link a:hover {
-    text-decoration: underline;
-    }
     </style>
 </head>
 <body>
 
 <div class="form-container">
-    <h2><i class="fas fa-sign-in-alt"></i> Login to Your Account</h2>
+    <h2>🔐 Login to Spice Ceylon</h2>
     <form id="loginForm">
         <div class="mb-3 form-group">
             <label for="loginEmail" class="form-label">Email Address</label>
             <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                 <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email" required>
+                <div class="invalid-feedback">Please enter a valid email.</div>
             </div>
         </div>
 
@@ -118,6 +125,7 @@
             <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
                 <input type="password" class="form-control" id="loginPassword" placeholder="Enter your password" required>
+                <div class="invalid-feedback">Password must be at least 6 characters.</div>
             </div>
         </div>
 
@@ -125,7 +133,7 @@
             <a href="forgetpassword.html">Forgot password?</a>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100"><i class="fas fa-sign-in-alt"></i> Login</button>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
 
         <div class="signup-link">
             Don't have an account? <a href="SignUp.html">Sign Up</a>
@@ -133,11 +141,120 @@
     </form>
 </div>
 
-
-
-<script src="js/jquery-3.7.1.min.js"></script>
+<!-- ✅ Scripts order FIX -->
+<script src="Js/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="js/SignIn.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#loginForm").submit(function (event) {
+            event.preventDefault();
+
+            let email = $("#loginEmail").val().trim();
+            let password = $("#loginPassword").val().trim();
+
+            if (!email || !password) {
+                Swal.fire("Oops...", "Please fill all fields!", "warning");
+                return;
+            }
+            if (!validateEmail(email)) {
+                Swal.fire("Invalid Email", "Enter a valid email address.", "error");
+                return;
+            }
+            if (password.length < 6) {
+                Swal.fire("Weak Password", "Password must be at least 6 characters.", "error");
+                return;
+            }
+
+            console.log("Sending:", { email, password });
+
+            $.ajax({
+                url: "http://localhost:8080/api/v1/auth/authenticate",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ email, password }),
+                success: function (response) {
+                    console.log("Response:", response);
+
+                    // ✅ Backend eken token ekama enne
+                    let token = response.token || (response.data ? response.data.token : null);
+
+                    if (token) {
+                        localStorage.setItem("authtoken", token);
+
+                        const decoded = parseJwt(token);
+                        if (decoded && decoded.id) {
+                            localStorage.setItem("userId", decoded.id);
+                        }
+
+                        if (decoded && decoded.role) {
+                            const role = decoded.role.toUpperCase();
+                            console.log("Decoded role:", role);
+
+                            if (role === "ADMIN") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Login Successful",
+                                    text: "Redirecting to Admin Dashboard...",
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                }).then(() => {
+                                    window.location.href = "Dashboard.html";
+                                });
+                            } else if (role === "USER") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Login Successful",
+                                    text: "Redirecting...",
+                                    showConfirmButton: false,
+                                    timer: 2000
+                                }).then(() => {
+                                    window.location.href = "index.html";
+                                });
+                            } else {
+                                Swal.fire("Login Failed", "Unknown role in token!", "error");
+                            }
+                        } else {
+                            Swal.fire("Login Failed", "Role not found in token!", "error");
+                        }
+                    } else {
+                        Swal.fire("Login Failed", "Invalid email or password.", "error");
+                    }
+                },
+                error: function (xhr) {
+                    console.log("Error:", xhr.responseText);
+                    Swal.fire("Login Failed", "Check your email and password.", "error");
+                }
+            });
+
+        });
+
+        function validateEmail(email) {
+            let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+    });
+
+    function parseJwt(token) {
+        try {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (e) {
+            console.error("Invalid token:", e);
+            return null;
+        }
+    }
+
+    $(document).on('click', '#logout, .dropdown-item', function () {
+        localStorage.removeItem("authtoken");
+        sessionStorage.removeItem("authtoken");
+        window.location.href = "home.html";
+    });
+</script>
 </body>
 </html>

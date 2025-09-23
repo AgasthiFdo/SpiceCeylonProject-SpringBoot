@@ -29,7 +29,7 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Spice Ceylon</a>
+        <a class="navbar-brand" href="#">🧄 Spice Ceylon 🫚</a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,7 +41,7 @@
                 <li class="nav-item"><a class="nav-link" href="#products">Spices</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <li class="nav-item"><a class="btn btn-warning ms-2" href="Cart.html">🛒</a></li>
-                <li class="nav-item"><a class="btn btn-warning ms-2" href="Login.html">Login</a></li>
+                <li class="nav-item"><a class="btn btn-warning ms-2" href="SignIn.html">Login</a></li>
             </ul>
         </div>
     </div>
@@ -111,7 +111,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Tea</h5>
                     <p class="card-text">Aromatic mix of Ceylon tea.</p>
-                    <a href="Cart1.html" class="btn btn-success">Select</a>
+                    <a href="Tea.html" class="btn btn-success">Select</a>
                 </div>
             </div>
         </div>
@@ -121,7 +121,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Spice Mix</h5>
                     <p class="card-text">Aromatic mix of Ceylon spices.</p>
-                    <a href="Cart1.html" class="btn btn-success">Select</a>
+                    <a href="Mix.html" class="btn btn-success">Select</a>
                 </div>
             </div>
         </div>
@@ -199,25 +199,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card product-card">
-                <img src="images/Cumin%20Seeds.png" class="card-img-top" alt="Turmeric">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Turmeric Powder</h5>
-                    <a href="Cart8.html" class="btn btn-success">Select</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card product-card">
-                <img src="images/Mustard%20Seeds.png" class="card-img-top" alt="Turmeric">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Mustard Seeds</h5>
-                    <a href="Cart9.html" class="btn btn-success">Select</a>
-                </div>
-            </div>
-        </div>
-        <!-- repeat more products -->
     </div>
 </div>
 
@@ -231,22 +212,22 @@
     <h2 class="text-center mb-4">Contact Us</h2>
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <form class="contact-form p-4 shadow rounded bg-white">
+            <form id="contactForm" class="contact-form p-4 shadow rounded bg-white">
                 <div class="mb-3">
                     <label for="from" class="form-label">From</label>
-                    <input type="email" class="form-control" id="from" placeholder="Nod">
+                    <input type="email" class="form-control" id="from" placeholder="Nod" required>
                 </div>
                 <div class="mb-3">
                     <label for="to" class="form-label">To</label>
-                    <input type="email" class="form-control" id="to" placeholder="to@example.com">
+                    <input type="email" class="form-control" id="to" placeholder="to@example.com" required>
                 </div>
                 <div class="mb-3">
                     <label for="sub" class="form-label">Subject</label>
-                    <input type="text" class="form-control" id="sub" placeholder="Title">
+                    <input type="text" class="form-control" id="sub" placeholder="Title" required>
                 </div>
                 <div class="mb-3">
                     <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" rows="4" placeholder="Write your message..."></textarea>
+                    <textarea class="form-control" id="message" rows="4" placeholder="Write your message..." required></textarea>
                 </div>
                 <button type="submit" class="btn btn-warning">Send Message</button>
             </form>
@@ -254,6 +235,34 @@
     </div>
 </div>
 
+<script>
+    document.getElementById("contactForm").addEventListener("submit", async function(e) {
+        e.preventDefault();
+
+        const mailData = {
+            fromMail: document.getElementById("from").value,
+            toMail: document.getElementById("to").value,
+            subject: document.getElementById("sub").value,
+            message: document.getElementById("message").value
+        };
+
+        try {
+            const response = await fetch("http://localhost:8080/api/v1/mail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(mailData)
+            });
+
+            const result = await response.text();
+            alert(result); // Show success or error message
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to send message!");
+        }
+    });
+</script>
 
 
 
