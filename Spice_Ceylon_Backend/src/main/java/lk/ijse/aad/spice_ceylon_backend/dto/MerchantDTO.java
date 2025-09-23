@@ -1,8 +1,10 @@
 package lk.ijse.aad.spice_ceylon_backend.dto;
 
 
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
