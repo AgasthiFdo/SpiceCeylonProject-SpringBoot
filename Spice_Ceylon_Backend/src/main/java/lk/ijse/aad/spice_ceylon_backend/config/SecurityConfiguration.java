@@ -1,6 +1,5 @@
 package lk.ijse.aad.spice_ceylon_backend.config;
 
-import lk.ijse.aad.spice_ceylon_backend.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

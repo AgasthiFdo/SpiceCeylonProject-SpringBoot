@@ -3,28 +3,16 @@ package lk.ijse.aad.spice_ceylon_backend.controller;
 
 
 
-//import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-//import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import jakarta.validation.Valid;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import lk.ijse.aad.spice_ceylon_backend.dto.AuthDTO;
-//import lk.ijse.aad.spice_ceylon_backend.dto.ResponseDTO;
-import lk.ijse.aad.spice_ceylon_backend.dto.UserDTO;
-import lk.ijse.aad.spice_ceylon_backend.entity.RoleType;
-import lk.ijse.aad.spice_ceylon_backend.entity.User;
-import lk.ijse.aad.spice_ceylon_backend.service.impl.UserServiceImpl;
-import lk.ijse.aad.spice_ceylon_backend.util.JwtUtil;
-import lk.ijse.aad.spice_ceylon_backend.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-//import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-//import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-//import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-//import com.google.api.client.http.javanet.NetHttpTransport;
-//import com.google.api.client.json.gson.GsonFactory;
 
 
 import java.util.Collections;
@@ -51,7 +39,7 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<ResponseDTO> authenticate( @RequestBody UserDTO userDTO) {
+    public ResponseEntity<ResponseDTO> authenticate(@RequestBody UserDTO userDTO) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
