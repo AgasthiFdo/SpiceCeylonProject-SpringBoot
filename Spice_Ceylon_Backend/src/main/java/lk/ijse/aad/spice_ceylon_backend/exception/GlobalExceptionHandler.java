@@ -1,6 +1,7 @@
 package lk.ijse.aad.spice_ceylon_backend.exception;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lk.ijse.aad.spice_ceylon_backend.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
