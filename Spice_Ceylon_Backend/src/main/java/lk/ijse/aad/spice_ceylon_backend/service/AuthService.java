@@ -4,7 +4,6 @@ import lk.ijse.aad.spice_ceylon_backend.dto.RegisterDTO;
 import lombok.RequiredArgsConstructor;
 import lk.ijse.aad.spice_ceylon_backend.dto.AuthDTO;
 import lk.ijse.aad.spice_ceylon_backend.dto.AuthResponseDTO;
-import lk.ijse.aad.spice_ceylon_backend.entity.Role;
 import lk.ijse.aad.spice_ceylon_backend.repository.UserRepository;
 import org.apache.catalina.User;
 import org.springframework.security.authentication.BadCredentialsException;

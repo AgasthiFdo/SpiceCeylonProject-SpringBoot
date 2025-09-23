@@ -1,9 +1,11 @@
 package lk.ijse.aad.spice_ceylon_backend.entity;
 
 
-
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "merchants")
