@@ -5,7 +5,6 @@ import lk.ijse.aad.spice_ceylon_backend.dto.MailDetailsDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +17,7 @@ public class MailController {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @PostMapping
     public String sendEmail(@RequestBody MailDetailsDTO mailDetailsDTO) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();

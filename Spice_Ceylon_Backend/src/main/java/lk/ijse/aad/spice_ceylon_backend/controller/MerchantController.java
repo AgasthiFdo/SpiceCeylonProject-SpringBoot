@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/merchants")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5500") // Frontend HTML run karana port ekata match karanna
+@CrossOrigin(origins = "http://localhost:5500") // Frontend HTML run karana port eka venuven match karna
 public class MerchantController {
 
     private final MerchantService merchantService;

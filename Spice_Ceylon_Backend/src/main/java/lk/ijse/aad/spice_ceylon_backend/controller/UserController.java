@@ -4,7 +4,11 @@ package lk.ijse.aad.spice_ceylon_backend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lk.ijse.aad.spice_ceylon_backend.config.JwtFilter;
-import lk.ijse.aad.spice_ceylon_backend.dto.*;
+import lk.ijse.aad.spice_ceylon_backend.entity.User;
+import lk.ijse.aad.spice_ceylon_backend.repository.UserRepo;
+import lk.ijse.aad.spice_ceylon_backend.service.UserService;
+import lk.ijse.aad.spice_ceylon_backend.util.JwtUtil;
+import lk.ijse.aad.spice_ceylon_backend.util.VarList;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +43,7 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDTO> addUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse> addUser(@RequestBody UserDTO userDTO) {
         System.out.println("register");
         System.out.println(userDTO.getEmail());
         System.out.println(userDTO.getUsername());
@@ -53,20 +57,20 @@ public class UserController {
                     authDTO.setEmail(userDTO.getEmail());
                     authDTO.setToken(token);
                     return ResponseEntity.status(HttpStatus.CREATED)
-                            .body(new ResponseDTO(VarList.Created, "Success", authDTO));
+                            .body(new ApiResponse(VarList.Created, "Success", authDTO));
                 }
                 case VarList.Not_Acceptable -> {
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
-                            .body(new ResponseDTO(VarList.Not_Acceptable, "Email Already Used", null));
+                            .body(new ApiResponse(VarList.Not_Acceptable, "Email Already Used", null));
                 }
                 default -> {
                     return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
-                            .body(new ResponseDTO(VarList.Bad_Gateway, "Error", null));
+                            .body(new ApiResponse(VarList.Bad_Gateway, "Error", null));
                 }
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
+                    .body(new ApiResponse(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
 
@@ -134,9 +138,9 @@ public class UserController {
 //    }
 
     @GetMapping("/searchUsersByRole/{keyword}")
-    public ResponseEntity<ResponseDTO> searchUsersByRole(@PathVariable("keyword") String keyword) {
+    public ResponseEntity<ApiResponse> searchUsersByRole(@PathVariable("keyword") String keyword) {
         List<UserDTO> users = userService.searcherUsersByRole(keyword);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK, "Search Success", users));
+                .body(new ApiResponse(VarList.OK, "Search Success", users));
     }
 }
