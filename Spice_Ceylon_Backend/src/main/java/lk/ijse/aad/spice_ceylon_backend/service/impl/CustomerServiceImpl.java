@@ -4,7 +4,6 @@ package lk.ijse.aad.spice_ceylon_backend.service.impl;
 import lk.ijse.aad.spice_ceylon_backend.dto.CustomerDTO;
 import lk.ijse.aad.spice_ceylon_backend.entity.Customer;
 import lk.ijse.aad.spice_ceylon_backend.repository.CustomerRepository;
-import lk.ijse.aad.spice_ceylon_backend.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

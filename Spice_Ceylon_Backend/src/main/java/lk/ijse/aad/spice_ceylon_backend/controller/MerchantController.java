@@ -2,7 +2,6 @@ package lk.ijse.aad.spice_ceylon_backend.controller;
 
 
 import lk.ijse.aad.spice_ceylon_backend.dto.MerchantDTO;
-import lk.ijse.aad.spice_ceylon_backend.service.MerchantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
