@@ -3,7 +3,6 @@ package lk.ijse.aad.spice_ceylon_backend.controller;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import lk.ijse.aad.spice_ceylon_backend.config.JwtFilter;
 import lk.ijse.aad.spice_ceylon_backend.entity.User;
 import lk.ijse.aad.spice_ceylon_backend.repository.UserRepo;
 import lk.ijse.aad.spice_ceylon_backend.service.UserService;
