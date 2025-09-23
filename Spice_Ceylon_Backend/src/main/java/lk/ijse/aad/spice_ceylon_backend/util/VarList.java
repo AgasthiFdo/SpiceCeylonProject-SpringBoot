@@ -1,6 +1,6 @@
 package lk.ijse.aad.spice_ceylon_backend.util;
 
-public class zVarList {
+public class VarList {
     public static final int Continue = 100;
     public static final int Switching_Protocols = 101;
     public static final int Early_Hints = 103;

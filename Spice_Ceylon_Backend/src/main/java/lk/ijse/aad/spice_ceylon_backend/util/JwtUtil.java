@@ -1,47 +1,94 @@
 package lk.ijse.aad.spice_ceylon_backend.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import lk.ijse.aad.spice_ceylon_backend.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
 
 @Component
-public class JwtUtil {
-    @Value("${jwt.expiration}")
-    private long expiration;
+@PropertySource(ignoreResourceNotFound = true, value = "classpath:otherprops.properties")
+public class JwtUtil implements Serializable {
 
-    @Value("${jwt.secretKey}")
+    private static final long serialVersionUID = 234234523523L;
+
+    public static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 12;
+
+    @Value("${jwt.secret}")
     private String secretKey;
 
-    public String generateToken(String username){
+    public String getUsernameFromToken(String token) {
+        return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public Claims getUserRoleCodeFromToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
+
+    private Claims getAllClaimsFromToken(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+    }
+
+
+    private Boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDateFromToken(token);
+        return expiration.before(new Date());
+    }
+
+
+    public String generateToken(UserDTO userDTO) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", userDTO.getRole().name());
+        claims.put("id",userDTO.getId());
+        return doGenerateToken(claims, userDTO.getEmail());
+    }
+
+       private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(
-                        System.currentTimeMillis() + expiration))
-                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes())
-                        ,SignatureAlgorithm.HS256).compact();
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .signWith(SignatureAlgorithm.HS512, secretKey).compact();
     }
-    public String extractUsername(String token){
-        return Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                .build()
+
+
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+
+    public Long extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("id", Long.class);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-    public boolean validateToken(String token){
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        }catch (Exception e){
-            return false;
-        }
+                .getBody();
     }
 }
