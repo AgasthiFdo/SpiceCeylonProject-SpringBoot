@@ -3,18 +3,21 @@ package lk.ijse.aad.spice_ceylon_backend.controller;
 
 
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.gson.GsonFactory;
+//import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+//import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+
+import lk.ijse.aad.spice_ceylon_backend.dto.ApiResponse;
+import lk.ijse.aad.spice_ceylon_backend.dto.AuthDTO;
+import lk.ijse.aad.spice_ceylon_backend.dto.UserDTO;
+import lk.ijse.aad.spice_ceylon_backend.service.impl.UserServiceImpl;
+import lk.ijse.aad.spice_ceylon_backend.util.JwtUtil;
+import lk.ijse.aad.spice_ceylon_backend.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -38,25 +41,25 @@ public class AuthController {
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<ResponseDTO> authenticate(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<ApiResponse> authenticate( @RequestBody UserDTO userDTO) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(new ResponseDTO(VarList.Unauthorized, "Invalid Credentials", e.getMessage()));
+                    .body(new ApiResponse(VarList.Unauthorized, "Invalid Credentials", e.getMessage()));
         }
 
         UserDTO loadedUser = userService.loadUserDetailsByUsername(userDTO.getEmail());
         if (loadedUser == null) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new ResponseDTO(VarList.Conflict, "Authorization Failure! Please Try Again", null));
+                    .body(new ApiResponse(VarList.Conflict, "Authorization Failure! Please Try Again", null));
         }
 
         String token = jwtUtil.generateToken(loadedUser);
         if (token == null || token.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(new ResponseDTO(VarList.Conflict, "Authorization Failure! Please Try Again", null));
+                    .body(new ApiResponse(VarList.Conflict, "Authorization Failure! Please Try Again", null));
         }
 
         AuthDTO authDTO = new AuthDTO();
@@ -64,7 +67,7 @@ public class AuthController {
         authDTO.setToken(token);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new ResponseDTO(VarList.Created, "Success", authDTO));
+                .body(new ApiResponse(VarList.Created, "Success", authDTO));
     }
 
 
@@ -86,56 +89,7 @@ public class AuthController {
         return ResponseEntity.ok(userService.resetPassword(email, newPassword));
     }
 
-    @PostMapping("/google")
-    public ResponseEntity<ResponseDTO> googleLogin(@RequestBody Map<String, String> payload) {
-        String idTokenString = payload.get("authtoken"); // Frontend එකෙන් ලැබෙන Google ID Token
 
-        try {
-            // 1️⃣ Token verifier create කරයි
-            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
-                    new NetHttpTransport(),
-                    new GsonFactory()
-            )
-                    .setAudience(Collections.singletonList(GOOGLE_CLIENT_ID))
-                    .build();
-
-            // 2️⃣ Token verify කරයි
-            GoogleIdToken idToken = verifier.verify(idTokenString);
-            if (idToken != null) {
-                GoogleIdToken.Payload tokenPayload = idToken.getPayload();
-                String email = tokenPayload.getEmail();
-                String name = (String) tokenPayload.get("username");
-
-                // 3️⃣ User database check
-                User user = userService.findByEmail(email);
-                if (user == null) {
-                    UserDTO userDTO = new UserDTO();
-                    userDTO.setEmail(email);
-                    userDTO.setUsername(name);
-                    userDTO.setRole(RoleType.USER);
-                    userService.addUser(userDTO);
-                }
-
-                // 4️⃣ JWT generate
-                UserDTO loadedUser = userService.loadUserDetailsByUsername(email);
-                String jwtToken = jwtUtil.generateToken(loadedUser);
-
-                AuthDTO authDTO = new AuthDTO();
-                authDTO.setEmail(email);
-                authDTO.setToken(jwtToken);
-
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(new ResponseDTO(VarList.Created, "Login Success", authDTO));
-
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .body(new ResponseDTO(VarList.Unauthorized, "Invalid Google Token", null));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
-        }
-    }
 
 
 
